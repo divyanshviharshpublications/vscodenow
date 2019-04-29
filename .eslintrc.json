@@ -1,0 +1,76 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": false,
+    "es6": true
+  },
+  "plugins": [
+    "html"
+  ],
+  "root": true,
+
+  "extends": [
+    "eslint:all"
+  ],
+  "rules": {
+    // what i like
+    "semi": ["error", "never"],           // everything is per-line now, no need for semicolons
+    "indent": ["error", 2],               // compact plus reliably viewed everywhere
+    "padded-blocks": "off",               // i want code to be compressed
+    "one-var": "off",                     // though it can compress, this is good for keeping things clean
+    "sort-keys": "off",                   // keys should be sorted by what makes most sense
+    "object-property-newline": "off",     // sometimes i want this because of fetch calls
+    "wrap-regex": "off",                  // with proper syntax highlighting you dont need them
+    "curly": "off",                       // people hate me for it, but i dont see whats wrong with no curlies
+    "no-ternary": "off",                  // cmon man, cant we all just get along
+    "multiline-ternary": "off",           // and theres even two rules for this!
+    "no-continue": "off",                 // less nested if statements and such actually makes things cleaner
+    "max-depth": "off",                   // if it's clean this isn't necessary
+    "array-element-newline": "off",       // sometimes you just want all array elements on one line to be cleaner
+    "require-jsdoc": "off",               // ok lets all just calm down now, no way.
+    "capitalized-comments": "off",        // these three are so i can comment out code to debug
+    "spaced-comment": "off",              // these three are so i can comment out code to debug
+    "multiline-comment-style": "off",     // these three are so i can comment out code to debug
+    "sort-imports": "off",                // it really doesnt add value
+    "valid-jsdoc": "off",                 // not ready for this yet
+    "quote-props": ["error", "consistent-as-needed"],               // properties are symbols, not strings
+    "space-before-function-paren": ["error", "never"],              // looks cleaner this way
+    "array-bracket-newline": ["error", "consistent"],               // allows for x = [{ \n
+    "nonblock-statement-body-position": ["error", "below"],         // im a fan of no curlies when not necessary
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true }],    // sometimes (like here) i want comments away from the code
+    "arrow-body-style": "off",                                      // unnecessary rule, not clear what it's solving for
+    "no-unused-vars": ["error", {"args": "none"}],                  // this is useful, but args arent defined by me
+    "no-use-before-define": ["error", {"variables": false}],        // it's usually safe since this problem usually happens at the top level
+
+    // can compromise
+    "newline-per-chained-call": "off",    // yes it can be abused, but this is how to keep things simple holistically
+    "max-len": "off",                     // long lines are sometimes cleaner (note, can compromise here)
+    "no-console": "off",                  // ideally this isn't on, but i need a better logger
+    "max-statements": "off",              // too restrictive otherwise
+    "max-lines-per-function": "off",      // again, overly restrictive
+    "no-magic-numbers": "off",            // needed for sanity
+    "class-methods-use-this": "off",      // can't be in the middle of writing code with this on
+    "no-inline-comments": "off",          // this is fine
+    "line-comment-position": "off",       // sometimes you just need to describe whats going on
+    "require-await": "off",
+    "complexity": "off",
+    "max-params": "off",
+    "no-await-in-loop": "off",
+
+    // ts-check
+    "lines-around-comment": "off",        // jsdoc needed all over for ts-check
+    "no-extra-parens": "off",             // jsdoc for casting
+    "arrow-parens": "off",                // jsdoc for function param types
+
+    // for prod
+    "no-empty-function": "off"
+  }
+}
