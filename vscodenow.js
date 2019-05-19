@@ -22,28 +22,59 @@ export default class VSCodeNow {
   }
 
   async getStatus() {
-    document.querySelector("#statusText").innerText = "retrieving..."
+    this.setStatusText("getting machine status...")
     const machine = await this.getMachine()
     if (machine) {
-      document.querySelector("#statusText").innerText = `${machine.state} (IP: ${machine.publicIpAddress})`
+      if (machine.state === "ready")
+        this.setStatusText(`${machine.state} (IP: ${machine.publicIpAddress})`)
+      else
+        this.setStatusText(machine.state)
     } else {
-      document.querySelector("#statusText").innerText = "machine not found"
+      this.setStatusText("machine not found")
     }
   }
 
+  async setStatusText(/** @type {string} */ text) {
+    document.querySelector("#statusText").innerText = text
+  }
+
   async startServer() {
+    this.setStatusText("getting machine status...")
     const machine = await this.getMachine()
+    this.setStatusText("starting server...")
     await fetch(`https://api.paperspace.io/machines/${machine.id}/start`, {
       headers: {"x-api-key": this.config.paperspaceAPIKey},
       method: "POST"
     })
+    this.setStatusText("waiting for started state...")
+    await this.waitFor(3000, 10, async() => (await this.getMachine()).state === "ready")
+    return this.getStatus()
   }
 
   async stopServer() {
+    this.setStatusText("getting machine status...")
     const machine = await this.getMachine()
+    this.setStatusText("stopping server...")
     await fetch(`https://api.paperspace.io/machines/${machine.id}/stop`, {
       headers: {"x-api-key": this.config.paperspaceAPIKey},
       method: "POST"
     })
+    this.setStatusText("waiting for stopped state...")
+    await this.waitFor(3000, 10, async() => (await this.getMachine()).state === "off")
+    this.setStatusText("stopped server.")
+  }
+
+  async waitFor(/** @type {number} */ attemptDelayMs, /** @type {number} */ maxAttempts, /** @type {() => Promise<boolean>} */ toRun) {
+    /** @param {number} ms */
+    const delay = ms => new Promise(res => setTimeout(res, ms))
+    for (let loopNo = 0; loopNo < maxAttempts; loopNo += 1) {
+      if (await toRun())
+        return
+
+      // Do the delay every time but the last loop
+      if (loopNo < maxAttempts - 1)
+        await delay(attemptDelayMs)
+    }
+    throw new Error("Timeout waiting for result")
   }
 }
