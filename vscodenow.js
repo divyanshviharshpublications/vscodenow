@@ -25,7 +25,7 @@ export default class VSCodeNow {
     document.querySelector("#statusText").innerText = "retrieving..."
     const machine = await this.getMachine()
     if (machine) {
-      document.querySelector("#statusText").innerText = machine.state
+      document.querySelector("#statusText").innerText = `${machine.state} (IP: ${machine.publicIpAddress})`
     } else {
       document.querySelector("#statusText").innerText = "machine not found"
     }
