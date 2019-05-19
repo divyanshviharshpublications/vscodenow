@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "allowJs": true,
+    "noEmit": true,
+
+    "strict": true,
+    "suppressImplicitAnyIndexErrors": true,
+
+    "module": "es2015",
+    "target": "es2018"
+  }
+}
